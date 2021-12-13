@@ -7,5 +7,35 @@
     <title>Lista pedidos</title>
 </head>
 <body>
+
+<h1 th:inline="text" >
+			Estos son tus pedidos
+	   		<span th:text="${nombre}"></span>
+		</h1>
+<table>
+
+    <tr>
+        <th> Referencia </th>
+        <th> Productos </th>
+        <th> Fecha </th>
+        <th> Enlaces </th>
+    </tr>
+    
+    <tr th:each="pedido : ${listaPedidos}">
+        <td th:text="${pedido.referencia}"></td>
+        <td>
+        
+        	<ul th:each="producto : ${pedido.listaProductos}">
+        		<li th:inline="text" >
+			<span th:text="${producto.key.nombre}"></span> --
+	   		<span th:text="${producto.value}"></span>.ud</li>
+        	</ul>
+        	
+        </td>
+        <td th:text="${pedido.fechaPedido}"></td>
+        <td> <form th:action="@{/editarPedido}"> <input type="submit" id="pedido.referencia" value="Editar Pedido"></form></td>
+    </tr>
+</table>
+
 </body>
 </html>

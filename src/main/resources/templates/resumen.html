@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista pedidos</title>
+</head>
+<body>
+
+	<h1> Resumen del pedido </h1>
+	
+	<ul>
+		<li th:each="producto : ${pedido.getListaProductos()}">
+			<span th:text="${producto.key.nombre}"></span> --
+			<span th:text="${producto.value}"></span>.ud --- Precio: 
+			<span th:text="${producto.key.precio*producto.value}"></span>€
+		</li>
+		<li tx:inline="text"> 
+			<span th:text="${}"></span>
+		</li>
+	</ul>
+
+</body>
+</html>

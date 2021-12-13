@@ -1,24 +1,28 @@
 package com.example.demo.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Pedido {
 	private static int creacionReferencia = 0000;
 	private int referencia;
 	private Usuario usuarioPedido;
-	private ArrayList <Producto> listaProductos;
+	private HashMap <Producto,Integer> listaProductos;
 	private LocalDate fechaPedido;
+	private String direccion;
+	private String tipoEnvio;
+	private double precioTotal;
 	
-	public Pedido(Usuario usuarioPedido) {
+	public Pedido(Usuario usuarioPedido, String direccion) {
 		super();
 		this.referencia = creacionReferencia+1;
-		this.referencia ++;
+		creacionReferencia ++;
 		this.usuarioPedido = usuarioPedido;
 		this.fechaPedido = LocalDate.now();
-		this.listaProductos = new ArrayList<>();
+		this.listaProductos = new HashMap<>();
+		this.direccion = direccion;
 	}
 
 	public int getReferencia() {
@@ -33,12 +37,12 @@ public class Pedido {
 		this.usuarioPedido = usuarioPedido;
 	}
 
-	public List<Producto> getListaProductos() {
+	public Map<Producto,Integer> getListaProductos() {
 		return listaProductos;
 	}
 
-	public void anadirProducto(Producto p) {
-		this.listaProductos.add(p);
+	public void anadirProductos(HashMap<Producto,Integer> productos) {
+		this.listaProductos = productos;
 	}
 
 	public LocalDate getFechaPedido() {
@@ -47,6 +51,30 @@ public class Pedido {
 
 	public void setFechaPedido(LocalDate fechaPedido) {
 		this.fechaPedido = fechaPedido;
+	}
+	
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getTipoEnvio() {
+		return tipoEnvio;
+	}
+
+	public void setTipoEnvio(String tipoEnvio) {
+		this.tipoEnvio = tipoEnvio;
+	}
+
+	public double getPrecioTotal() {
+		return precioTotal;
+	}
+
+	public void setPrecioTotal(double precioTotal) {
+		this.precioTotal = precioTotal;
 	}
 
 	@Override
