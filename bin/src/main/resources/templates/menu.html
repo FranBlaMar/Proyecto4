@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú</title>
+</head>
+<body>
+	<div class="cabecera">
+		<h1 th:inline="text" >
+			¡Hola
+	   		<span th:text="${nombre}"></span>!
+		</h1>
+		<h2> Bienvenido a tu perfil</h2>
+	</div>
+	<div class="direccion">
+		<form th:action="@{/realizarPedido}">
+			<input type="submit" value="Realizar un nuevo pedido"> 
+		</form> 
+		
+		<form th:action="@{/listaPedidos}">
+			<input type="submit" value="Comprobar lista de pedidos"> 
+		</form> 
+	</div>
+	
+	
+</body>
+</html>

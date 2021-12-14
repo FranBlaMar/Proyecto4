@@ -10,7 +10,6 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.Pedido;
 import com.example.demo.model.Producto;
 
 @Service
@@ -42,12 +41,12 @@ public class ProductoService {
 		return resultado;
 	}
 	
-	public void anadirPrecioTotal(Map<Producto,Integer> productos, Pedido p) {
+	public double obtenerPrecioTotal(Map<Producto,Integer> productos) {
 		double precioTotal = 0;
 		for (Map.Entry<Producto, Integer> producto : productos.entrySet()) {
 		    precioTotal += producto.getKey().getPrecio()*producto.getValue() ;
 		}
-		p.setPrecioTotal(precioTotal);
+		return precioTotal;
 	}
 	
 	@PostConstruct

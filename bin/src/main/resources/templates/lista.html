@@ -20,16 +20,13 @@
 
     <tr>
         <th id="ref"> Referencia </th>
-        <th id="env"> Tipo de Envio </th>
         <th id="product"> Productos </th>
-        <th id="precio"> Precio Total </th>
-        <th id="date"> Fecha </th>       
+        <th id="date"> Fecha </th>
         <th id="links"> Enlaces </th>
     </tr>
     
     <tr th:each="pedido : ${listaPedidos}">
         <td th:text="${pedido.referencia}"></td>
-        <td th:text="${pedido.tipoEnvio}"></td>
         <td>
         
         	<ul th:each="producto : ${pedido.listaProductos}">
@@ -41,14 +38,9 @@
         	</ul>
         	
         </td>
-        <td th:text="${pedido.precioTotal}"></td>
         <td th:text="${pedido.fechaPedido}"></td>
         
-        <td> <form th:action="@{/editarPedido}">
-        <input type="hidden" th:value="${pedido.referencia}" name="refe">
-         <input type="submit" value="Editar Pedido">
-         </form>
-         </td>
+        <td> <form th:action="@{/editarPedido}"> <input type="submit" id="pedido.referencia" value="Editar Pedido"></form></td>
     </tr>
 </table>
 

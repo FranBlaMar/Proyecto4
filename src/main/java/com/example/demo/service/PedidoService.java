@@ -27,11 +27,6 @@ public class PedidoService {
 		return pedidosList;
 	}
 	
-	public void anadirPedidoRepositorio(Pedido p) {
-		this.pedidosList.add(p);
-	}
-	
-	
 	public List<Pedido> obtenerPedidosDeUsuario(Usuario usuario){
 		List <Pedido> resultado = new ArrayList<> ();
 		for(Pedido pedido: this.pedidosList) {
@@ -42,11 +37,19 @@ public class PedidoService {
 		return resultado;
 	}
 	
+	public Pedido crearYAnadirPedido(Usuario us,double precioTotal, HashMap<Producto,Integer> cantidadesProductos) {
+		Pedido p = new Pedido(us,us.getDireccion());
+		p.setPrecioTotal(precioTotal);
+		p.anadirProductos(cantidadesProductos);
+		this.pedidosList.add(p);
+		return p;
+	}
+	
 	public void anadirProductosAPedido(HashMap<Producto,Integer> productos, Pedido p) {
 		p.anadirProductos(productos);
 	}
-	public void anadirTipoEnvio(String envio, Pedido p) {
-		p.setTipoEnvio(envio);
+	public void anadirTipoEnvio(String envio, int pedido) {
+		obtenerPedidoPorReferencia(pedido).setTipoEnvio(envio);
 	}
 	
 	public Pedido obtenerPedidoPorReferencia(int referencia){
@@ -61,12 +64,12 @@ public class PedidoService {
 	
 	
 
-	
+	//Creación manual de pedidos para comprobación
 	@PostConstruct
 	public void init() {
 		Usuario usuario1 = servicioUsuario.obtenerUsuario("F123");
 		Pedido pedido1 = new Pedido(usuario1,usuario1.getDireccion());
-		pedido1.setTipoEnvio("ESTAMDAR");
+		pedido1.setTipoEnvio("ESTANDAR");
 		pedido1.setPrecioTotal(76.19);
 		HashMap<Producto,Integer> productos1 = new HashMap<>();
 		productos1.put(this.servicioProducto.obtenerProductoPorId("111A"), 2);
@@ -76,7 +79,7 @@ public class PedidoService {
 		this.servicioUsuario.anadirPedidoAUsuario(usuario1, pedido1);
 		
 		Pedido pedido2 = new Pedido(usuario1, usuario1.getDireccion());
-		pedido2.setTipoEnvio("EXPRES");
+		pedido2.setTipoEnvio("EXPRESS");
 		pedido2.setPrecioTotal(75.49);
 		HashMap<Producto,Integer> productos2 = new HashMap<>();
 		productos2.put(this.servicioProducto.obtenerProductoPorId("222B"), 2);

@@ -110,12 +110,11 @@ public class UsuarioController {
 			}
 			else {
 				Usuario us= this.servicioUsuario.obtenerUsuario(this.sesion.getAttribute("usuario").toString());
-				Pedido p = new Pedido(us,us.getDireccion());
 				HashMap<Producto,Integer> cantidadesProductos = (HashMap<Producto, Integer>) this.servicioProducto.obtenerHashMap(cantidades);
-				this.servicioPedido.anadirProductosAPedido(cantidadesProductos, p);
-				this.servicioProducto.anadirPrecioTotal(cantidadesProductos, p);			
+				double precioTotal = this.servicioProducto.obtenerPrecioTotal(cantidadesProductos);
+				Pedido p = this.servicioPedido.crearYAnadirPedido(us, precioTotal, cantidadesProductos);
+				this.servicioUsuario.anadirPedidoAUsuario(us, p);
 				model.addAttribute("pedido",p);
-				redirectAttributes.addFlashAttribute("pedidoTerminado", p);
 				model.addAttribute("usuario",us);
 				resultado = "resumen";
 			}
@@ -131,21 +130,31 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/realizarPedido/resumen/finish")
-	public String finalizarPedido(@RequestParam("envio") String envio, @ModelAttribute("pedidoTerminado") Pedido p) {
+	public String finalizarPedido(@RequestParam("envio") String envio, @RequestParam int ref) {
 		String resultado;
 		if(this.sesion.getAttribute("usuario") == null) {
 			resultado = "redirect:/";
 		}
 		else {
 			
-			Usuario us= this.servicioUsuario.obtenerUsuario(this.sesion.getAttribute("usuario").toString());
-			this.servicioPedido.anadirTipoEnvio(envio, p);
-			this.servicioPedido.anadirPedidoRepositorio(p);
-			this.servicioUsuario.anadirPedidoAUsuario(us, p);
+			this.servicioPedido.anadirTipoEnvio(envio, ref);
 			resultado="redirect:/listaPedidos";
 		}
 		return resultado;
 	}
 	
-	
+	@GetMapping("/editarPedido")
+	public String editarPedido(Model model, @RequestParam int refe) {
+		String resultado;
+		if(this.sesion.getAttribute("usuario") == null) {
+			resultado = "redirect:/";
+		}
+		else {
+			List<Producto> listaProductos = this.servicioProducto.findAll();
+			model.addAttribute("listaProductos",listaProductos);
+			model.addAttribute("pedido", this.servicioPedido.obtenerPedidoPorReferencia(refe));
+			resultado="editar";
+		}
+		return resultado;
+	}
 }

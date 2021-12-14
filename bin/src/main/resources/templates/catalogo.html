@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo</title>
+</head>
+<body>
+<div class="header">
+	<form th:action="@{/cerrarSesion}">
+		<input type="submit" value="Cerrar Sesion">
+	</form>
+</div>
+	<form th:action="@{/realizarPedido/añadirProductos}" method="POST">
+		<div th:each="producto : ${listaProductos}">
+			<img th:src=${producto.imagen} alt="imagen">
+			<p th:inline="text" >
+	   			<span th:text=${producto.nombre}></span> <span th:text="${producto.precio}"></span>
+			</p>
+			<input type="number" name="cantidad" value=0 min=0>
+		</div>
+		<p th:text="${errorCatalogo}"></p>
+		<input type="submit" value="Realizar Pedido" class="boton">
+	</form>
+</body>
+</html>
