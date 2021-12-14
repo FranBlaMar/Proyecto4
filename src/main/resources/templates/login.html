@@ -7,6 +7,11 @@
     <title>Log-In</title>
 </head>
 <body>
+<div class="header">
+	<form th:action="@{/cerrarSesion}">
+		<input type="submit" value="Cerrar Sesion">
+	</form>
+</div>
 	<h1>Log In</h1>
     <form id="login" action ="#" th:object="${usuario}" method="post" th:action="@{/loginUsr/submit}">
     

@@ -7,19 +7,37 @@
     <title>Lista pedidos</title>
 </head>
 <body>
+<div class="header">
+	<form th:action="@{/cerrarSesion}">
+		<input type="submit" value="Cerrar Sesion">
+	</form>
+</div>
 
 	<h1> Resumen del pedido </h1>
 	
 	<ul>
-		<li th:each="producto : ${pedido.getListaProductos()}">
+		<li th:each="producto : ${pedido.listaProductos}">
 			<span th:text="${producto.key.nombre}"></span> --
 			<span th:text="${producto.value}"></span>.ud --- Precio: 
 			<span th:text="${producto.key.precio*producto.value}"></span>€
 		</li>
-		<li tx:inline="text"> 
-			<span th:text="${}"></span>
-		</li>
 	</ul>
 
+	<div class="personalData">
+			<span> Datos Personales: </span>
+			<span th:text="${pedido.direccion}"></span>
+			<span th:text="${usuario.email}"></span>
+			<span th:text="${usuario.telefono}"></span>
+	</div>
+	
+	<form th:action="@{/realizarPedido/resumen/finish}" method="GET">
+		<input type="radio" id="estandar" name="envio" value="ESTANDAR" checked>
+  		<label for="estandar">Estandar</label>
+  		
+  		<input type="radio" id="express" name="envio" value="EXPRESS">
+  		<label for="express">Express</label>
+  
+		<input type="submit" value="Enviar Pedido">
+	</form>
 </body>
 </html>

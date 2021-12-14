@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.service.PedidoService;
 import com.example.demo.service.ProductoService;
@@ -67,9 +68,9 @@ public class UsuarioController {
 			resultado = "redirect:/";
 		}
 		else {
-			String usuario = this.sesion.getAttribute("usuario").toString();
-			model.addAttribute("nombre", servicioUsuario.obtenerUsuario(usuario).getNombre());
-			List<Pedido> listaPedidos = this.servicioPedido.obtenerPedidosDeUsuario(usuario);
+			Usuario usuario = this.servicioUsuario.obtenerUsuario(this.sesion.getAttribute("usuario").toString());
+			model.addAttribute("nombre", usuario.getNombre());
+			List<Pedido> listaPedidos = this.servicioUsuario.obtenerPedidosDeUsuario(usuario);
 			model.addAttribute("listaPedidos", listaPedidos);
 			resultado = "lista";
 		}
@@ -91,21 +92,58 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/realizarPedido/añadirProductos")
-	public String realizarPedido(@RequestParam("cantidad") int[] cantidades, Model model) {
+	public String realizarPedido(@RequestParam("cantidad") int[] cantidades, Model model, RedirectAttributes redirectAttributes) {
 		String resultado;
 		if(this.sesion.getAttribute("usuario") == null) {
 			resultado = "redirect:/";
 		}
 		else {
-			Usuario us= this.servicioUsuario.obtenerUsuario(this.sesion.getAttribute("usuario").toString());
-			Pedido p = new Pedido(us,us.getDireccion());
-			this.servicioPedido.anadirProductosAPedido(this.servicioProducto.obtenerHashMap(cantidades), p);
-			//Añadir precio total al pedido
-			model.addAttribute("pedido",p);
-			model.addAttribute("usuario",us);
-			resultado = "resumen";
+			boolean comprobarCarrito = false;
+			for (int i = 0; i < cantidades.length && !comprobarCarrito; i++) {
+				if (cantidades[i] > 0) {
+					comprobarCarrito = true;
+				}
+			}
+			if(!comprobarCarrito) {
+				resultado ="redirect:/realizarPedido";
+				redirectAttributes.addFlashAttribute("errorCatalogo", Messages.getErrorCatalogo());
+			}
+			else {
+				Usuario us= this.servicioUsuario.obtenerUsuario(this.sesion.getAttribute("usuario").toString());
+				Pedido p = new Pedido(us,us.getDireccion());
+				HashMap<Producto,Integer> cantidadesProductos = (HashMap<Producto, Integer>) this.servicioProducto.obtenerHashMap(cantidades);
+				this.servicioPedido.anadirProductosAPedido(cantidadesProductos, p);
+				this.servicioProducto.anadirPrecioTotal(cantidadesProductos, p);			
+				model.addAttribute("pedido",p);
+				redirectAttributes.addFlashAttribute("pedidoTerminado", p);
+				model.addAttribute("usuario",us);
+				resultado = "resumen";
+			}
 		}
 		
+		return resultado;
+	}
+	
+	@GetMapping("/cerrarSesion")
+	public String cerrarSesion(){
+		this.sesion.invalidate();
+		return "redirect:/";
+	}
+
+	@GetMapping("/realizarPedido/resumen/finish")
+	public String finalizarPedido(@RequestParam("envio") String envio, @ModelAttribute("pedidoTerminado") Pedido p) {
+		String resultado;
+		if(this.sesion.getAttribute("usuario") == null) {
+			resultado = "redirect:/";
+		}
+		else {
+			
+			Usuario us= this.servicioUsuario.obtenerUsuario(this.sesion.getAttribute("usuario").toString());
+			this.servicioPedido.anadirTipoEnvio(envio, p);
+			this.servicioPedido.anadirPedidoRepositorio(p);
+			this.servicioUsuario.anadirPedidoAUsuario(us, p);
+			resultado="redirect:/listaPedidos";
+		}
 		return resultado;
 	}
 	

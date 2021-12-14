@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.Pedido;
 import com.example.demo.model.Producto;
 
 @Service
@@ -31,8 +32,8 @@ public class ProductoService {
 		return p;
 	}
 	
-	public HashMap<Producto,Integer> obtenerHashMap(int[] cantidades){
-		HashMap<Producto,Integer> resultado = new HashMap();
+	public Map<Producto,Integer> obtenerHashMap(int[] cantidades){
+		HashMap<Producto,Integer> resultado = new HashMap<>();
 		for (int i = 0; i < this.productosList.size(); i++) {
 			if(cantidades[i] > 0) {
 				resultado.put(this.productosList.get(i), cantidades[i]);
@@ -41,13 +42,12 @@ public class ProductoService {
 		return resultado;
 	}
 	
-	public double obtenerPrecioTotal(HashMap<Producto,Integer> productos) {
+	public void anadirPrecioTotal(Map<Producto,Integer> productos, Pedido p) {
 		double precioTotal = 0;
 		for (Map.Entry<Producto, Integer> producto : productos.entrySet()) {
 		    precioTotal += producto.getKey().getPrecio()*producto.getValue() ;
-
 		}
-		return precioTotal;
+		p.setPrecioTotal(precioTotal);
 	}
 	
 	@PostConstruct

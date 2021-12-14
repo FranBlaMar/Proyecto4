@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.Pedido;
 import com.example.demo.model.Usuario;
 @Service
 public class UsuarioService {
@@ -23,6 +24,20 @@ public class UsuarioService {
 	 */
 	public List<Usuario> findAll() {
 		return usersList;
+	}
+	
+	public void anadirPedidoAUsuario(Usuario us, Pedido p) {
+		for(Usuario user: this.usersList) {
+			if (user.equals(us)) {
+				user.anadirPedido(p);
+			}
+		}
+	}
+	
+	public List<Pedido> obtenerPedidosDeUsuario(Usuario us){
+		int usIndex = this.usersList.indexOf(us);
+		Usuario user = this.usersList.get(usIndex);
+		return user.getPedidosUsuario();
 	}
 	
 	public Usuario comprobarUser(Usuario us) {

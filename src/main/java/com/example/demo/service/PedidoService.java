@@ -27,10 +27,15 @@ public class PedidoService {
 		return pedidosList;
 	}
 	
-	public List<Pedido> obtenerPedidosDeUsuario(String usuario){
+	public void anadirPedidoRepositorio(Pedido p) {
+		this.pedidosList.add(p);
+	}
+	
+	
+	public List<Pedido> obtenerPedidosDeUsuario(Usuario usuario){
 		List <Pedido> resultado = new ArrayList<> ();
 		for(Pedido pedido: this.pedidosList) {
-			if(pedido.getUsuarioPedido().getUser().equals(usuario)) {
+			if(pedido.getUsuarioPedido().equals(usuario)) {
 				resultado.add(pedido);
 			}
 		}
@@ -39,6 +44,9 @@ public class PedidoService {
 	
 	public void anadirProductosAPedido(HashMap<Producto,Integer> productos, Pedido p) {
 		p.anadirProductos(productos);
+	}
+	public void anadirTipoEnvio(String envio, Pedido p) {
+		p.setTipoEnvio(envio);
 	}
 	
 	public Pedido obtenerPedidoPorReferencia(int referencia){
@@ -50,6 +58,7 @@ public class PedidoService {
 		}
 		return resultado;
 	}
+	
 	
 
 	
@@ -64,7 +73,7 @@ public class PedidoService {
 		productos1.put(this.servicioProducto.obtenerProductoPorId("444D"), 4);
 		productos1.put(this.servicioProducto.obtenerProductoPorId("333C"), 1);
 		pedido1.anadirProductos(productos1);
-
+		this.servicioUsuario.anadirPedidoAUsuario(usuario1, pedido1);
 		
 		Pedido pedido2 = new Pedido(usuario1, usuario1.getDireccion());
 		pedido2.setTipoEnvio("EXPRES");
@@ -74,6 +83,7 @@ public class PedidoService {
 		productos2.put(this.servicioProducto.obtenerProductoPorId("555E"), 1);
 		productos2.put(this.servicioProducto.obtenerProductoPorId("666F"), 1);
 		pedido2.anadirProductos(productos2);
+		this.servicioUsuario.anadirPedidoAUsuario(usuario1, pedido2);
 		
 		Usuario user2 = servicioUsuario.obtenerUsuario("J123");
 		Pedido pedido3 = new Pedido(user2,user2.getDireccion());
@@ -84,6 +94,7 @@ public class PedidoService {
 		productos3.put(this.servicioProducto.obtenerProductoPorId("111A"), 3);
 		productos3.put(this.servicioProducto.obtenerProductoPorId("333C"), 2);
 		pedido3.anadirProductos(productos3);
+		this.servicioUsuario.anadirPedidoAUsuario(user2, pedido3);
 		
 		pedidosList.addAll(Arrays.asList(pedido1,pedido2,pedido3));
 	}
