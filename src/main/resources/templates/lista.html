@@ -4,61 +4,71 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet" type="text/css">
     <title>Lista pedidos</title>
 </head>
 <body>
 <div class="header">
+	<h1> HOODERS </h1>
 	<form th:action="@{/cerrarSesion}">
-		<input type="submit" value="Cerrar Sesion">
+		<input type="submit" value="Cerrar Sesion" class="boton">
 	</form>
 </div>
+<div class="contenedorMensa">
 <h1 th:inline="text" >
 			Estos son tus pedidos
 	   		<span th:text="${nombre}"></span>
 		</h1>
-<table>
+</div>
+<div class="contenedor">
+	<div class="cuadrado">
+	<table>
+	    <tr>
+	        <th id="ref"> Referencia </th>
+	        <th id="env"> Tipo de Envio </th>
+	        <th id="product"> Productos </th>
+	        <th id="precio"> Precio Total </th>
+	         <th id="dir"> Direccion </th>
+	          <th id="tel"> Telefono </th>
+	           <th id="email"> Email </th>
+	        <th id="date"> Fecha </th>       
+	        <th id="links"> Enlaces </th>
+	    </tr>
+	    
+	    <tr th:each="pedido : ${listaPedidos}">
+	        <td th:text="${pedido.referencia}"></td>
+	        <td th:text="${pedido.tipoEnvio}"></td>
+	        <td>
+	        
+	        	<ul th:each="producto : ${pedido.listaProductos}">
+	        		<li th:inline="text" >
+				<span th:text="${producto.key.nombre}"></span> --
+		   		<span th:text="${producto.value}"></span>.ud
+		   		<span th:text="${resul}"></span></li>
+		   		
+	        	</ul>
+	        	
+	        </td>
+	        <td th:text="${pedido.precioTotal}+€"></td>
+	        <td th:text="${pedido.direccion}"></td>
+	        <td th:text="${pedido.telefono}"></td>
+	        <td th:text="${pedido.email}"></td>
+	        <td th:text="${pedido.fechaPedido}"></td>
+	        
+	        <td> <form th:action="@{/editarPedido/{refe}(refe =${pedido.referencia})}">
+	         <input type="submit" value="Editar Pedido" class="boton">
+	         </form>
+	         <form th:action="@{/borrarPedido/{refe}(refe =${pedido.referencia})}">
+	         <input type="submit" value="Borrar Pedido" class="boton">
+	         </form>
+	         </td>
+	    </tr>
+	</table>
 
-    <tr>
-        <th id="ref"> Referencia </th>
-        <th id="env"> Tipo de Envio </th>
-        <th id="product"> Productos </th>
-        <th id="precio"> Precio Total </th>
-         <th id="dir"> Direccion </th>
-          <th id="tel"> Telefono </th>
-           <th id="email"> Email </th>
-        <th id="date"> Fecha </th>       
-        <th id="links"> Enlaces </th>
-    </tr>
-    
-    <tr th:each="pedido : ${listaPedidos}">
-        <td th:text="${pedido.referencia}"></td>
-        <td th:text="${pedido.tipoEnvio}"></td>
-        <td>
-        
-        	<ul th:each="producto : ${pedido.listaProductos}">
-        		<li th:inline="text" >
-			<span th:text="${producto.key.nombre}"></span> --
-	   		<span th:text="${producto.value}"></span>.ud
-	   		<span th:text="${resul}"></span></li>
-	   		
-        	</ul>
-        	
-        </td>
-        <td th:text="${pedido.precioTotal}"></td>
-        <td th:text="${pedido.direccion}"></td>
-        <td th:text="${pedido.telefono}"></td>
-        <td th:text="${pedido.email}"></td>
-        <td th:text="${pedido.fechaPedido}"></td>
-        
-        <td> <form th:action="@{/editarPedido/{refe}(refe =${pedido.referencia})}">
-         <input type="submit" value="Editar Pedido">
-         </form>
-         <form th:action="@{/borrarPedido/{refe}(refe =${pedido.referencia})}">
-         <input type="submit" value="Borrar Pedido">
-         </form>
-         </td>
-    </tr>
-</table>
-
+	<form th:action="@{/menu}">
+		<input type="submit" value="Volver al menú" class="boton">
+	</form>
+	</div>
+	</div>
 </body>
 </html>

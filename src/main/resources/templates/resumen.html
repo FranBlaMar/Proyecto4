@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/styles.css" rel="stylesheet" type="text/css">
     <title>Lista pedidos</title>
 </head>
 <body>
 <div class="header">
+	<h1> HOODERS </h1>
 	<form th:action="@{/cerrarSesion}">
-		<input type="submit" value="Cerrar Sesion">
+		<input type="submit" value="Cerrar Sesion" class="boton">
 	</form>
 </div>
-
+<br><br><br>
+<div class="contenedorMensa">
 	<h1> Resumen del pedido </h1>
-	
+	</div>
+	<div class="contenedorMensa">
+	<div class="cuadrado">
 	<ul>
 		<li th:each="producto : ${pedido.listaProductos}">
 			<span th:text="${producto.key.nombre}"></span> --
@@ -22,21 +27,27 @@
 			<span th:text="${producto.key.precio*producto.value}"></span>€
 		</li>
 	</ul>
-
+	<br><br><br><br>
 	<div class="personalData">
-			<span> Datos Personales: </span>
-			<span th:text="${pedido.direccion}"></span>
-			<span th:text="${usuario.email}"></span>
-			<span th:text="${usuario.telefono}"></span>
+			<h4> Datos Personales: </h4>
+			Direccion:  <span th:text="${pedido.direccion}"></span><br><br>
+			Email:  <span th:text="${usuario.email}"></span><br><br>
+			Telefono:  <span th:text="${usuario.telefono}"></span>
 	</div>
-	
+	<br><br>
 	<form th:action="@{/realizarPedido/resumen/finish/{refe}(refe =${pedido.referencia})}" method="GET">
+		<h4>Tipo de envio: </h4>
 		<input type="radio" id="estandar" name="envio" value="ESTANDAR" checked>
   		<label for="estandar">Estandar</label>
   		
   		<input type="radio" id="express" name="envio" value="EXPRESS">
   		<label for="express">Express</label>
-		<input type="submit" value="Enviar Pedido">
+  		<br><br><br>
+  		<span> Direccion de envio: </span><input type="text" name="direccion" th:value="${pedido.direccion}">
+  		
+		<input type="submit" value="Enviar Pedido" class="boton">
 	</form>
+	</div>
+	</div>
 </body>
 </html>

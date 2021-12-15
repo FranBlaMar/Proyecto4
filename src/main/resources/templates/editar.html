@@ -4,18 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/styles.css" rel="stylesheet" type="text/css">
     <title>Editar Pedido</title>
 </head>
 <body>
 <div class="header">
+	<h1> HOODERS </h1>
 	<form th:action="@{/cerrarSesion}">
-		<input type="submit" value="Cerrar Sesion">
+		<input type="submit" value="Cerrar Sesion" class="boton">
 	</form>
 </div>
-
+<div class="contenedorMensa">
 <h1>Editar mi pedido</h1>
+<h4>Pedido con referencia <span th:text="${pedido.referencia}"></span></h4>
+	</div>
+<div class="cuadrado">
 <form th:action="@{/editarPedido/realizarCambios/{refe}(refe =${pedido.referencia})}" method="POST">
-	<h4>Pedido con referencia <span th:text="${pedido.referencia}"></span></h4>
+	
     <table>
 	<tr>
 		<th>Nombre</th>
@@ -47,8 +52,10 @@
 		</td>
     	</tr>
     </table>
-    <input type="submit" value="Editar Pedido">
+    
+    <h3 th:text="${errorEditar}"></h3>
+    <input type="submit" value="Editar Pedido" class="boton">
 </form>
-
+</div>
 </body>
 </html>

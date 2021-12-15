@@ -7,6 +7,13 @@ public class Producto {
 	private double precio;
 	
 	
+	/**
+	 * Constructor de la clase productos
+	 * @param id del producto
+	 * @param nombre del producto
+	 * @param ruta de la imagen del producto
+	 * @param precio del producto
+	 */
 	public Producto(String id, String nombre, String imagen, double precio) {
 		super();
 		this.id = id;

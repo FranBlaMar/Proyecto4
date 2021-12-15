@@ -17,6 +17,13 @@ public class Pedido {
 	private String tipoEnvio;
 	private double precioTotal;
 	
+	/**
+	 * Constructor de la clase Pedido
+	 * @param Usuario del pedido
+	 * @param Direccion del pedido
+	 * @param Telefono del usuario del pedido
+	 * @param Email del usuario del pedido
+	 */
 	public Pedido(Usuario usuarioPedido, String direccion, String telefono, String email) {
 		super();
 		this.referencia = creacionReferencia+1;

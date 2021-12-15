@@ -4,26 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/styles.css" rel="stylesheet" type="text/css">
     <title>Menú</title>
 </head>
 <body>
-	<div class="cabecera">
-		<h1 th:inline="text" >
-			¡Hola
-	   		<span th:text="${nombre}"></span>!
-		</h1>
-		<h2> Bienvenido a tu perfil</h2>
+
+<div class="header">
+	<h1> HOODERS </h1>
+	<form th:action="@{/cerrarSesion}">
+		<input type="submit" value="Cerrar Sesion" class="boton">
+	</form>
+</div>
+	<div class="contenedorMensa">
+		<h1>¡Bienvenid@ a Hooders!</h1>
+		<h2> Este es tu perfil</h2>
+		
 	</div>
-	<div class="direccion">
+	<div class="contenedor">
+	<div class="opciones">
 		<form th:action="@{/realizarPedido}">
-			<input type="submit" value="Realizar un nuevo pedido"> 
+			<input class="boton" type="submit" value="Realizar un nuevo pedido"> 
 		</form> 
 		
 		<form th:action="@{/listaPedidos}">
-			<input type="submit" value="Comprobar lista de pedidos"> 
+			<input class="boton" type="submit" value="Comprobar lista de pedidos"> 
 		</form> 
 	</div>
-	
+	</div>
 	
 </body>
 </html>

@@ -21,13 +21,13 @@ public class Usuario {
 	public Usuario() {}
 	
 	/**
-	 * 
-	 * @param user
-	 * @param contrasena
-	 * @param email
-	 * @param nombre
-	 * @param telefono
-	 * @param direccion
+	 * Constructor de la clase usuario
+	 * @param nombre de usuario
+	 * @param contrasena del usuario
+	 * @param email del usuario
+	 * @param nombre del usuario
+	 * @param telefono del usuario
+	 * @param direccion del usuario
 	 */
 	public Usuario( String user,String contrasena, String email, String nombre, String telefono, String direccion) {
 		this.user = user;
@@ -39,6 +39,11 @@ public class Usuario {
 		this.pedidosUsuario = new ArrayList<>();
 	}
 	
+	/**
+	 * Constructor de la clase usuario con solo username y contraseña
+	 * @param nombre de ususario
+	 * @param contrasena del usuario
+	 */
 	public Usuario(String user, String contrasena) {
 		this.user=user;
 		this.contrasena = contrasena;

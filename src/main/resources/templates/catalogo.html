@@ -4,24 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/styles.css" rel="stylesheet" type="text/css">
     <title>Catálogo</title>
 </head>
 <body>
 <div class="header">
+	<h1> HOODERS </h1>
 	<form th:action="@{/cerrarSesion}">
-		<input type="submit" value="Cerrar Sesion">
+		<input type="submit" value="Cerrar Sesion" class="boton">
 	</form>
 </div>
+	<div class="contenedor">
 	<form th:action="@{/realizarPedido/añadirProductos}" method="POST">
-		<div th:each="producto : ${listaProductos}">
+		<div class="producto" th:each="producto : ${listaProductos}">
 			<img th:src=${producto.imagen} alt="imagen">
-			<p th:inline="text" >
+			<h4 th:inline="text" >
 	   			<span th:text=${producto.nombre}></span> <span th:text="${producto.precio}"></span>
-			</p>
+			</h4>
 			<input type="number" name="cantidad" value=0 min=0>
 		</div>
-		<p th:text="${errorCatalogo}"></p>
+		<div class="cuadrado" th:if="${errorCatalogo}"><p th:text="${errorCatalogo}"></p></div>
 		<input type="submit" value="Realizar Pedido" class="boton">
 	</form>
+	</div>
 </body>
 </html>
