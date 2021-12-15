@@ -34,6 +34,19 @@ public class UsuarioService {
 		}
 	}
 	
+	public void editarPedido(Pedido p, Usuario user) {
+		for(Usuario us : this.usersList) {
+			if(us.equals(user)) {
+				us.getPedidosUsuario().remove(p);
+				us.anadirPedido(p);
+			}
+		}
+	}
+	
+	public void borrarPedido(Pedido p, Usuario us) {
+		//Terminar
+	}
+	
 	public List<Pedido> obtenerPedidosDeUsuario(Usuario us){
 		int usIndex = this.usersList.indexOf(us);
 		Usuario user = this.usersList.get(usIndex);

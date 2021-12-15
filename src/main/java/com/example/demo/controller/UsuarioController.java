@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -129,31 +131,58 @@ public class UsuarioController {
 		return "redirect:/";
 	}
 
-	@GetMapping("/realizarPedido/resumen/finish")
-	public String finalizarPedido(@RequestParam("envio") String envio, @RequestParam int ref) {
+	@GetMapping("/realizarPedido/resumen/finish/{refe}")
+	public String finalizarPedido(@RequestParam("envio") String envio, @PathVariable("refe") int refe) {
 		String resultado;
 		if(this.sesion.getAttribute("usuario") == null) {
 			resultado = "redirect:/";
 		}
 		else {
 			
-			this.servicioPedido.anadirTipoEnvio(envio, ref);
+			this.servicioPedido.anadirTipoEnvio(envio, refe);
 			resultado="redirect:/listaPedidos";
 		}
 		return resultado;
 	}
 	
-	@GetMapping("/editarPedido")
-	public String editarPedido(Model model, @RequestParam int refe) {
+	@GetMapping("/editarPedido/{refe}")
+	public String editarPedido(Model model, @PathVariable int refe) {
 		String resultado;
 		if(this.sesion.getAttribute("usuario") == null) {
 			resultado = "redirect:/";
 		}
 		else {
-			List<Producto> listaProductos = this.servicioProducto.findAll();
-			model.addAttribute("listaProductos",listaProductos);
+			Usuario us= this.servicioUsuario.obtenerUsuario(this.sesion.getAttribute("usuario").toString());
+			model.addAttribute("usuario",us);
 			model.addAttribute("pedido", this.servicioPedido.obtenerPedidoPorReferencia(refe));
 			resultado="editar";
+		}
+		return resultado;
+	}
+	
+	@PostMapping("/editarPedido/realizarCambios/{refe}")
+	public String finalizarEdicionPedido(@RequestParam String[] productos, 
+		@RequestParam int[] cantidades, @PathVariable int refe, 
+		@RequestParam String direccion, @RequestParam String telefono, 
+		@RequestParam String email, @RequestParam String envio) {
+		String resultado;
+		if(this.sesion.getAttribute("usuario") == null) {
+			resultado = "redirect:/";
+		}
+		else {
+			HashMap<Producto,Integer> listaDeProductos = new HashMap<>();
+			for(int i = 0; i < productos.length; i++) {
+				int cantidad = cantidades[i];
+				Producto producto = this.servicioProducto.obtenerProductoPorId(productos[i]);
+				if(cantidad > 0) {
+					listaDeProductos.put(producto,cantidad);
+				}
+			}
+			double precioTotal = this.servicioProducto.obtenerPrecioTotal(listaDeProductos);
+			Usuario us= this.servicioUsuario.obtenerUsuario(this.sesion.getAttribute("usuario").toString());
+			Pedido p = this.servicioPedido.editarPedido(us, precioTotal, listaDeProductos,envio, refe, direccion, telefono, email);
+			this.servicioUsuario.editarPedido(p, us);
+			resultado ="redirect:/listaPedidos";
 		}
 		return resultado;
 	}

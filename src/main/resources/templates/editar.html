@@ -12,17 +12,43 @@
 		<input type="submit" value="Cerrar Sesion">
 	</form>
 </div>
-<form th:action="@{/editarPedido/realizarCambios}" method="POST">
-		<div th:each="producto : ${listaProductos}">
-			<img th:src=${producto.imagen} alt="imagen">
-			<p th:inline="text" >
-	   			<span th:text=${producto.nombre}></span> <span th:text="${producto.precio}"></span>
-			</p>
-			<!--  No funciona-->
-			<input type="number" name="cantidad" th:value="${pedido.listaProductos.contain(producto)} ? 'pedido.listaProductos.get(Producto).value' : '0'" min=0>
-		</div>
-		<p th:text="${errorCatalogo}"></p>
-		<input type="submit" value="Realizar Pedido" class="boton">
-	</form>
+
+<h1>Editar mi pedido</h1>
+<form th:action="@{/editarPedido/realizarCambios/{refe}(refe =${pedido.referencia})}" method="POST">
+	<h4>Pedido con referencia <span th:text="${pedido.referencia}"></span></h4>
+    <table>
+	<tr>
+		<th>Nombre</th>
+		<th>Cantidad</th>
+	</tr>
+	<tr th:each="producto : ${pedido.listaProductos}">
+		<td th:text="${producto.key.nombre}"></td>
+        <td ><input type="number" name="cantidades" th:value="${producto.value}"/> <input type="hidden" name="productos" th:value="${producto.key.id}"/></td>      
+	</tr>
+	</table>
+    <table>
+    	<tr>
+    		<th>Teléfono</th>
+    		<th>Dirección envio</th>
+    		<th>Email</th>
+    		<th>Envio</th>
+    	</tr>
+    	<tr>
+    	<td><input type="text" name="telefono" th:value="${pedido.telefono}"/></td>
+     	<td><input type="text" name="direccion" th:value="${pedido.direccion}"/></td>
+     	<td><input type="text" name="email" th:value="${pedido.email}"/></td>
+		<td>
+		<input type="radio" id="estandar" name="envio" value="ESTANDAR" checked>
+  		<label for="estandar">Estandar</label>
+
+  		<input type="radio" id="express" name="envio" value="EXPRESS">
+  		<label for="express">Express</label>
+  		<input type="hidden" th:value="${pedido.referencia}" name="ref">
+		</td>
+    	</tr>
+    </table>
+    <input type="submit" value="Editar Pedido">
+</form>
+
 </body>
 </html>

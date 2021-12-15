@@ -20,6 +20,15 @@ public class Usuario {
 	
 	public Usuario() {}
 	
+	/**
+	 * 
+	 * @param user
+	 * @param contrasena
+	 * @param email
+	 * @param nombre
+	 * @param telefono
+	 * @param direccion
+	 */
 	public Usuario( String user,String contrasena, String email, String nombre, String telefono, String direccion) {
 		this.user = user;
 		this.contrasena = contrasena;

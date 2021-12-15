@@ -23,6 +23,9 @@
         <th id="env"> Tipo de Envio </th>
         <th id="product"> Productos </th>
         <th id="precio"> Precio Total </th>
+         <th id="dir"> Direccion </th>
+          <th id="tel"> Telefono </th>
+           <th id="email"> Email </th>
         <th id="date"> Fecha </th>       
         <th id="links"> Enlaces </th>
     </tr>
@@ -42,11 +45,16 @@
         	
         </td>
         <td th:text="${pedido.precioTotal}"></td>
+        <td th:text="${pedido.direccion}"></td>
+        <td th:text="${pedido.telefono}"></td>
+        <td th:text="${pedido.email}"></td>
         <td th:text="${pedido.fechaPedido}"></td>
         
-        <td> <form th:action="@{/editarPedido}">
-        <input type="hidden" th:value="${pedido.referencia}" name="refe">
+        <td> <form th:action="@{/editarPedido/{refe}(refe =${pedido.referencia})}">
          <input type="submit" value="Editar Pedido">
+         </form>
+         <form th:action="@{/borrarPedido/{refe}(refe =${pedido.referencia})}">
+         <input type="submit" value="Borrar Pedido">
          </form>
          </td>
     </tr>

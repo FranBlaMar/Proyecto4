@@ -38,7 +38,7 @@ public class PedidoService {
 	}
 	
 	public Pedido crearYAnadirPedido(Usuario us,double precioTotal, HashMap<Producto,Integer> cantidadesProductos) {
-		Pedido p = new Pedido(us,us.getDireccion());
+		Pedido p = new Pedido(us,us.getDireccion(),us.getTelefono(), us.getEmail());
 		p.setPrecioTotal(precioTotal);
 		p.anadirProductos(cantidadesProductos);
 		this.pedidosList.add(p);
@@ -50,6 +50,26 @@ public class PedidoService {
 	}
 	public void anadirTipoEnvio(String envio, int pedido) {
 		obtenerPedidoPorReferencia(pedido).setTipoEnvio(envio);
+	}
+	public Pedido editarPedido(Usuario us,double precioTotal, HashMap<Producto,Integer> cantidadesProductos, String tipoEnvio, int refe, String direccion, String telefono, String email) {
+		Pedido resultado = null;
+		for(Pedido p: this.pedidosList) {
+			if(p.getReferencia() == refe) {
+				p.anadirProductos(cantidadesProductos);
+				p.setUsuarioPedido(us);
+				p.setDireccion(direccion);
+				p.setTelefono(telefono);
+				p.setEmail(email);
+				p.setPrecioTotal(precioTotal);
+				p.setTipoEnvio(tipoEnvio);
+				resultado = p;
+			}
+		}
+		return resultado;
+	}
+	
+	public void borrarPedido(Pedido p) {
+		this.pedidosList.remove(p);
 	}
 	
 	public Pedido obtenerPedidoPorReferencia(int referencia){
@@ -68,7 +88,7 @@ public class PedidoService {
 	@PostConstruct
 	public void init() {
 		Usuario usuario1 = servicioUsuario.obtenerUsuario("F123");
-		Pedido pedido1 = new Pedido(usuario1,usuario1.getDireccion());
+		Pedido pedido1 = new Pedido(usuario1,usuario1.getDireccion(), usuario1.getTelefono(), usuario1.getEmail());
 		pedido1.setTipoEnvio("ESTANDAR");
 		pedido1.setPrecioTotal(76.19);
 		HashMap<Producto,Integer> productos1 = new HashMap<>();
@@ -78,7 +98,7 @@ public class PedidoService {
 		pedido1.anadirProductos(productos1);
 		this.servicioUsuario.anadirPedidoAUsuario(usuario1, pedido1);
 		
-		Pedido pedido2 = new Pedido(usuario1, usuario1.getDireccion());
+		Pedido pedido2 = new Pedido(usuario1, usuario1.getDireccion(), usuario1.getTelefono(), usuario1.getEmail());
 		pedido2.setTipoEnvio("EXPRESS");
 		pedido2.setPrecioTotal(75.49);
 		HashMap<Producto,Integer> productos2 = new HashMap<>();
@@ -89,7 +109,7 @@ public class PedidoService {
 		this.servicioUsuario.anadirPedidoAUsuario(usuario1, pedido2);
 		
 		Usuario user2 = servicioUsuario.obtenerUsuario("J123");
-		Pedido pedido3 = new Pedido(user2,user2.getDireccion());
+		Pedido pedido3 = new Pedido(user2,user2.getDireccion(), user2.getTelefono(), user2.getEmail());
 		pedido3.setTipoEnvio("ESTANDAR");
 		pedido3.setPrecioTotal(209.68);
 		HashMap<Producto,Integer> productos3 = new HashMap<>();

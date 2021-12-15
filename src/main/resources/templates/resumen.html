@@ -30,13 +30,12 @@
 			<span th:text="${usuario.telefono}"></span>
 	</div>
 	
-	<form th:action="@{/realizarPedido/resumen/finish}" method="GET">
+	<form th:action="@{/realizarPedido/resumen/finish/{refe}(refe =${pedido.referencia})}" method="GET">
 		<input type="radio" id="estandar" name="envio" value="ESTANDAR" checked>
   		<label for="estandar">Estandar</label>
   		
   		<input type="radio" id="express" name="envio" value="EXPRESS">
   		<label for="express">Express</label>
-  		<input type="hidden" th:value="${pedido.referencia}" name="ref">
 		<input type="submit" value="Enviar Pedido">
 	</form>
 </body>

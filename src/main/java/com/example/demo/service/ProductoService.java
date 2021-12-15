@@ -46,7 +46,7 @@ public class ProductoService {
 		for (Map.Entry<Producto, Integer> producto : productos.entrySet()) {
 		    precioTotal += producto.getKey().getPrecio()*producto.getValue() ;
 		}
-		return precioTotal;
+		return Math.round(precioTotal*100.0)/100.0;
 	}
 	
 	@PostConstruct

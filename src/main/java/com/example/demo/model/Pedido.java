@@ -12,10 +12,12 @@ public class Pedido {
 	private HashMap <Producto,Integer> listaProductos;
 	private LocalDate fechaPedido;
 	private String direccion;
+	private String telefono;
+	private String email;
 	private String tipoEnvio;
 	private double precioTotal;
 	
-	public Pedido(Usuario usuarioPedido, String direccion) {
+	public Pedido(Usuario usuarioPedido, String direccion, String telefono, String email) {
 		super();
 		this.referencia = creacionReferencia+1;
 		creacionReferencia ++;
@@ -23,6 +25,8 @@ public class Pedido {
 		this.fechaPedido = LocalDate.now();
 		this.listaProductos = new HashMap<>();
 		this.direccion = direccion;
+		this.telefono = telefono;
+		this.email = email;
 	}
 
 	public int getReferencia() {
@@ -33,6 +37,22 @@ public class Pedido {
 		return usuarioPedido;
 	}
 
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public void setUsuarioPedido(Usuario usuarioPedido) {
 		this.usuarioPedido = usuarioPedido;
 	}
@@ -40,7 +60,7 @@ public class Pedido {
 	public Map<Producto,Integer> getListaProductos() {
 		return listaProductos;
 	}
-
+	
 	public void anadirProductos(HashMap<Producto,Integer> productos) {
 		this.listaProductos = productos;
 	}
